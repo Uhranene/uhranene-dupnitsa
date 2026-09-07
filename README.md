@@ -29,6 +29,18 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Order notifications & daily kitchen summary
+
+Every paid order emails `ORDERS_NOTIFICATION_EMAIL` immediately (see `src/lib/email.ts`) — point that address at a mailbox the kitchen/office checks on their phone, and it acts as the order feed.
+
+For an end-of-day printable roster (every child's pickup code, grouped by school and grade, for the next school day), set `CRON_SECRET` in `.env` and schedule a daily GET request to:
+
+```
+https://<your-domain>/api/cron/daily-summary?secret=<CRON_SECRET>
+```
+
+A free service like [cron-job.org](https://cron-job.org) works well — trigger it once a day after parents are done ordering (e.g. 20:00). It emails the same `ORDERS_NOTIFICATION_EMAIL` a summary the kitchen can print and check kids off against by code or by name + grade the next morning.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

@@ -1,0 +1,88 @@
+// Prisma schema for Ученическо хранене - Дупница
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Parent {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  phone        String?
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  children Child[]
+  orders   Order[]
+}
+
+model Child {
+  id         String   @id @default(cuid())
+  parentId   String
+  parent     Parent   @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  name       String
+  schoolName String
+  grade      String
+  couponCode String   @unique
+  createdAt  DateTime @default(now())
+
+  orderItems OrderItem[]
+}
+
+enum Weekday {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+}
+
+enum MealCategory {
+  BREAKFAST
+  LUNCH
+  SNACK
+  DRINK
+}
+
+model MenuItem {
+  id          String       @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  category    MealCategory
+  weekday     Weekday
+  active      Boolean      @default(true)
+  sortOrder   Int          @default(0)
+
+  orderItems OrderItem[]
+}
+
+model Order {
+  id          String   @id @default(cuid())
+  parentId    String
+  parent      Parent   @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  status      String   @default("PAID")
+  totalAmount Float
+  createdAt   DateTime @default(now())
+
+  items OrderItem[]
+}
+
+model OrderItem {
+  id         String   @id @default(cuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  childId    String
+  child      Child    @relation(fields: [childId], references: [id])
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+  mealDate   DateTime
+  quantity   Int      @default(1)
+  unitPrice  Float
+}

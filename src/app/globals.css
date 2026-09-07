@@ -1,26 +1,113 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Carrot orange — brand / primary actions (4.9:1 against white text) */
+  --color-primary: #b85400;
+  --color-primary-hover: #9a4600;
+  --color-on-primary: #ffffff;
+
+  /* Broccoli green — secondary actions, "paid" states (5.4:1 against white text) */
+  --color-secondary: #1f7a32;
+  --color-secondary-hover: #175e27;
+  --color-on-secondary: #ffffff;
+
+  /* Sunny yellow — highlights, coupon/ticket accents (decorative, high contrast with dark text) */
+  --color-accent: #ffc73d;
+  --color-on-accent: #2b2118;
+
+  /* A few extra playful colors used only for decorative mural-style bits (dots, blobs) — not for text */
+  --color-fun-blue: #2fa9df;
+  --color-fun-pink: #ef5f96;
+  --color-fun-red: #ef4444;
+
+  --color-background: #fffbf3;
+  --color-surface: #ffffff;
+  --color-surface-alt: #fff4de;
+
+  --color-foreground: #2a2013;
+  --color-muted: #fdefd9;
+  --color-muted-foreground: #7a6a52;
+
+  --color-border: #f5decb;
+  --color-destructive: #d93a3f;
+  --color-on-destructive: #ffffff;
+  --color-ring: #b85400;
+
+  --font-display: var(--font-unbounded), system-ui, sans-serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-on-primary: var(--color-on-primary);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-secondary: var(--color-secondary);
+  --color-secondary-hover: var(--color-secondary-hover);
+  --color-on-secondary: var(--color-on-secondary);
+
+  --color-accent: var(--color-accent);
+  --color-on-accent: var(--color-on-accent);
+
+  --color-fun-blue: var(--color-fun-blue);
+  --color-fun-pink: var(--color-fun-pink);
+  --color-fun-red: var(--color-fun-red);
+
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-surface-alt: var(--color-surface-alt);
+
+  --color-foreground: var(--color-foreground);
+  --color-muted: var(--color-muted);
+  --color-muted-foreground: var(--color-muted-foreground);
+
+  --color-border: var(--color-border);
+  --color-destructive: var(--color-destructive);
+  --color-on-destructive: var(--color-on-destructive);
+  --color-ring: var(--color-ring);
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.uhd-focus-ring {
+  outline: none;
+}
+.uhd-focus-ring:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+@keyframes uhd-logo-float {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-3px) rotate(3deg); }
+}
+
+.uhd-logo-mark {
+  animation: uhd-logo-float 3.4s ease-in-out infinite;
+  transform-origin: 50% 60%;
+  transition: transform 0.25s ease;
+}
+
+.uhd-logo-link:hover .uhd-logo-mark,
+.uhd-logo-link:focus-visible .uhd-logo-mark {
+  animation-play-state: paused;
+  transform: rotate(-10deg) scale(1.12);
 }
